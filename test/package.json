@@ -1,9 +1,14 @@
 {
   "name": "@lumina-dev/test",
-  "version": "0.0.7",
-  "description": "",
+  "version": "0.0.8",
+  "description": "A single-line utility for debugging Solana applications.",
   "author": "wireless-anon",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lumina-labs/lumina-dev.git",
+    "directory": "test"
+  },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
