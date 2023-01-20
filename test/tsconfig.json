@@ -1,0 +1,19 @@
+{
+  "include": ["./src/**/*"],
+  "compilerOptions": {
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "module": "commonjs",
+    "target": "ES6",
+    "outDir": "dist/",
+    "rootDir": "./src"
+  }
+}
