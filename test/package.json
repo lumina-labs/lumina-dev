@@ -1,7 +1,7 @@
 {
   "name": "@lumina-dev/test",
-  "version": "0.0.8",
-  "description": "A single-line utility for debugging Solana applications.",
+  "version": "0.0.9",
+  "description": "A single-line utility for spinning up an interactive Lumina explorer for your Solana application tests.",
   "author": "wireless-anon",
   "license": "MIT",
   "repository": {
