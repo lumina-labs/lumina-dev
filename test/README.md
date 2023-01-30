@@ -38,4 +38,4 @@ A new tab will open with an interactive explorer for your local test environment
 
 ## Community
 
-Join the [Lumina Discord](http://discord.gg/e8J6wDwwrq) to chat with the community and team.
+Join the [Lumina Discord](http://discord.gg/TBYwXABNCW) to chat with the community and team.
