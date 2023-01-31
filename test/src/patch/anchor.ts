@@ -1,8 +1,11 @@
 import type * as Anchor from '@coral-xyz/anchor';
+import type * as MethodsModule from '@coral-xyz/anchor/dist/cjs/program/namespace/methods';
+import type * as RpcModule from '@coral-xyz/anchor/dist/cjs/program/namespace/rpc';
 import type { MethodsBuilder as MethodsBuilderClass } from '@coral-xyz/anchor/dist/cjs/program/namespace/methods';
 import type RpcFactoryClass from '@coral-xyz/anchor/dist/cjs/program/namespace/rpc';
 
 import type { PatchState, TestState } from '.';
+import { getOnly, searchModuleCache } from './util';
 import { patchWeb3 } from './web3';
 
 export interface AnchorObjects {
@@ -11,27 +14,31 @@ export interface AnchorObjects {
   RpcFactory: typeof RpcFactoryClass;
 }
 
+export function getAnchorObjectsFromModule(name: string): AnchorObjects {
+  return {
+    anchor: getOnly(searchModuleCache<typeof Anchor>(name, 'workspace')),
+    MethodsBuilder: getOnly(
+      searchModuleCache<typeof MethodsModule>(
+        `${name}/dist/cjs/program/namespace/methods`,
+        'MethodsBuilder',
+      ),
+    ).MethodsBuilder,
+    RpcFactory: getOnly(
+      searchModuleCache<typeof RpcModule>(
+        `${name}/dist/cjs/program/namespace/rpc`,
+        'default',
+      ),
+    ).default,
+  };
+}
+
 export function getAnchorObjects(): AnchorObjects {
   // IMPORTANT: start with @project-serum/anchor, then fallback to @coral-xyz/anchor
   // as @coral-xyz/anchor always exists in the project due to the dev dependency
   try {
-    return {
-      anchor: require('@project-serum/anchor'),
-      MethodsBuilder:
-        require('@project-serum/anchor/dist/cjs/program/namespace/methods')
-          .MethodsBuilder,
-      RpcFactory:
-        require('@project-serum/anchor/dist/cjs/program/namespace/rpc').default,
-    };
+    return getAnchorObjectsFromModule('@project-serum/anchor');
   } catch (e) {
-    return {
-      anchor: require('@coral-xyz/anchor'),
-      MethodsBuilder:
-        require('@coral-xyz/anchor/dist/cjs/program/namespace/methods')
-          .MethodsBuilder,
-      RpcFactory: require('@coral-xyz/anchor/dist/cjs/program/namespace/rpc')
-        .default,
-    };
+    return getAnchorObjectsFromModule('@coral-xyz/anchor');
   }
 }
 

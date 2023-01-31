@@ -19,3 +19,19 @@ export function getFirstSignature(encoded: string): string {
 }
 
 export const PATCHED_SET = new WeakSet();
+
+export function searchModuleCache<T>(name: string, containsField: string): T[] {
+  return Object.values(require.cache)
+    .filter((m): m is NodeModule => !!m)
+    .filter(({ id }) => id.includes(name))
+    .map((m) => m.exports)
+    .filter((m): m is T => m?.[containsField]);
+}
+
+export function getOnly<T>(array: T[]): T {
+  if (array.length !== 1) {
+    throw new Error('Expected array to have length of 1');
+  }
+
+  return array[0]!;
+}

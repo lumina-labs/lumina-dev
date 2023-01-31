@@ -1,14 +1,10 @@
 import type { web3 as Web3 } from '@coral-xyz/anchor';
 
 import type { PatchState, TestState } from '.';
-import { getFirstSignature, PATCHED_SET } from './util';
+import { getFirstSignature, PATCHED_SET, searchModuleCache } from './util';
 
 export function getWeb3Instances() {
-  return Object.values(require.cache)
-    .filter((m): m is NodeModule => !!m)
-    .filter(({ id }) => id.includes('@solana/web3.js'))
-    .map((m) => m.exports)
-    .filter((m): m is typeof Web3 => m?.Connection);
+  return searchModuleCache<typeof Web3>('@solana/web3.js', 'Connection');
 }
 
 export function patchWeb3(
