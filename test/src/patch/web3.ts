@@ -20,11 +20,7 @@ export function patchWeb3(
   PATCHED_SET.add(web3);
 
   web3.Connection.prototype.sendEncodedTransaction = ((self) =>
-    function (
-      this: typeof Web3.Connection,
-      encoded: string,
-      options?: Web3.SendOptions,
-    ) {
+    function (this: typeof Web3.Connection, encoded, options) {
       // Skip preflight so that the transaction can be picked up by the explorer.
       (options ??= {}).skipPreflight = true;
 
@@ -43,6 +39,10 @@ export function patchWeb3(
       if (!commitment || commitment === 'processed') {
         commitment = 'confirmed';
       }
-      return self.call(this, strategy, commitment);
+      return self.call(
+        this,
+        strategy as Parameters<typeof self>[0],
+        commitment,
+      );
     })(web3.Connection.prototype.confirmTransaction);
 }
