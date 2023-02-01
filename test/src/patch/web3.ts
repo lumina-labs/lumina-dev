@@ -25,6 +25,7 @@ export function patchWeb3(
       encoded: string,
       options?: Web3.SendOptions,
     ) {
+      // Skip preflight so that the transaction can be picked up by the explorer.
       (options ??= {}).skipPreflight = true;
 
       const signature = getFirstSignature(encoded);
@@ -34,4 +35,14 @@ export function patchWeb3(
         patchState.recentSignature = signature;
       });
     })(web3.Connection.prototype.sendEncodedTransaction);
+
+  web3.Connection.prototype.confirmTransaction = ((self) =>
+    function (this: typeof Web3.Connection, strategy, commitment) {
+      // Override commitment to confirmed so that calls to getTransaction
+      // return error logs.
+      if (!commitment || commitment === 'processed') {
+        commitment = 'confirmed';
+      }
+      return self.call(this, strategy, commitment);
+    })(web3.Connection.prototype.confirmTransaction);
 }

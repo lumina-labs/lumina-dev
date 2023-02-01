@@ -1,6 +1,6 @@
 {
   "name": "@lumina-dev/test",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "A single-line utility for spinning up an interactive Lumina explorer for your Solana application tests.",
   "author": "wireless-anon",
   "license": "MIT",
@@ -14,7 +14,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
-    "publish": "pnpm i && pnpm build && npm publish"
+    "prepublishOnly": "pnpm i && pnpm build"
   },
   "dependencies": {
     "bs58": "^5.0.0",
